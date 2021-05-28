@@ -1,0 +1,57 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: spring-demo-client
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/tx-manager?characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: root
+  redis:
+    host: localhost
+    port: 6379
+    password:
+  aop:
+    proxy-target-class: false
+  h2:
+    console:
+      enabled: true
+
+mybatis:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.springcloud.db.txmanager.entities
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+tx-lcn:
+  ribbon:
+    loadbalancer:
+      dtx:
+        enabled: true
+  aspect:
+    log:
+      file-path: ./logs/.txlcn/spring-demo-client-8003
+  client:
+    manager-address: 127.0.0.1:8070
+#    chain-level: 3
+#    tm-rpc-timeout: 2000
+#    machine-id: 1
+#    dtx-aspect-order: 0
+#    resource-order: 0
+  logger:
+    enabled: true
+    jdbc-url: jdbc:mysql://127.0.0.1:3306/tx-manager?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.alibaba.druid.pool.DruidDataSource
+
+logging:
+  level:
+    root: debug
